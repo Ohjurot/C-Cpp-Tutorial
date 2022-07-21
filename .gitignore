@@ -1,3 +1,5 @@
-# Ignore all intermediates and binary files
-*.exe
-*.obj
+# Exclude visual studio dir
+/.vs
+
+# Exclude build
+/build
