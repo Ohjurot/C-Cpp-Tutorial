@@ -25,6 +25,10 @@
  * HITS: 
  *  - https://en.wikipedia.org/wiki/Euclidean_division
  *  - https://en.wikipedia.org/wiki/Modulo_operation
+ * 
+ * VIDEOS:
+ *  - Task:         https://youtu.be/XKuywa66u-Q
+ *  - Solution:     https://youtu.be/wL92Eef85t8
  */
 
 /*
