@@ -40,7 +40,7 @@ void SerialEnd()
 {
     if (serial_status != -1)
     {
-        printf(" === End of serial data transmition (Sent %i Bytes) === \n", serial_status);
+        printf(" === End of serial data transmition (Sent %i Word(s)) === \n", serial_status);
         serial_status = -1;
     }
     else
