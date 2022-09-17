@@ -1,35 +1,38 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stddef.h>
 
-struct accumulateData // 16 Bytes big
+typedef size_t accumulateInt;
+typedef struct // 16 Bytes big
 {
-    int64_t sum;
-    int64_t num;
-};
-void newAccumulateData(struct accumulateData* data)
+    accumulateInt sum;
+    accumulateInt num;
+} accumulateData;
+
+void newAccumulateData(accumulateData* data)
 {
     data->sum = 0;
     data->num = 0;
 }
-void accumulate(struct accumulateData* data, int64_t value)
+void accumulate(accumulateData* data, accumulateInt value)
 {
     data->sum += value;
     data->num++;
 }
-int64_t accumulateResult(struct accumulateData* data)
+accumulateInt accumulateResult(accumulateData* data)
 {
     return data->sum / data->num;
 }
 
 int main()
 {
-    struct accumulateData data;
+    accumulateData data;
     newAccumulateData(&data);
 
     accumulate(&data, 10);
     accumulate(&data, 20);
-    accumulate(&data, 30);
+    accumulate(&data, 50);
 
-    int64_t avg = accumulateResult(&data);
+    accumulateInt avg = accumulateResult(&data);
     printf("The average is: %lli", avg);
 }
