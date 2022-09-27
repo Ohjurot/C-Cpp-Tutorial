@@ -42,10 +42,17 @@ int scan_int(int32_t* x)
 
 void execute_print(int32_t x, int32_t count)
 {
+	int32_t y_value[255]; // 0 - 254
+	if (count > 255) count = 255;
+
 	for (int32_t i = 1; i <= count; i++)
 	{
-		int32_t y = f(i * x);
-		print_fx(i * x, y);
+		y_value[i - 1] = f(i * x);
+	}
+
+	for (int32_t i = 1; i <= count; i++)
+	{
+		print_fx(i * x, y_value[i - 1]);
 	}
 }
 
