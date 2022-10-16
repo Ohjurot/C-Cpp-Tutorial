@@ -9,6 +9,7 @@ void stripeBuffer(char* buffer);
 
 int main()
 {
+    // Source: https://en.wikipedia.org/wiki/INI_file
     const char* iniContent = 
         "; last modified 1 April 2001 by John Doe\n"
         "[owner]\n"
