@@ -1,33 +1,6 @@
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
+#include "INIParser.h"
 
-void parseIni(const char* iniData);
-void appendBuffer(char* buffer, char c);
-void stripeBuffer(char* buffer);
-
-int main()
-{
-    // Source: https://en.wikipedia.org/wiki/INI_file
-    const char* iniContent = 
-        "; last modified 1 April 2001 by John Doe\n"
-        "[owner]\n"
-        "   name = John Doe\n"
-        "   organization = Acme Widgets Inc.\n"
-        "\n"
-        "[database]\n"
-        "   ; use IP address in case network name resolution is not working\n"
-        "   server = 192.0.2.62 \n"
-        "   port = 143\n"
-        "   file = \"payroll.dat\"\n";
-
-    printf("=== RAW INI FILE ===\n%s\n", iniContent);
-    printf("=== PARSED DATA ===\n");
-    parseIni(iniContent);
-}
-
-void parseIni(const char* iniData)
+void ini_parseIni(const char* iniData)
 {
     // Working buffer
     char buffer[256];
@@ -69,7 +42,7 @@ void parseIni(const char* iniData)
                     case '\n':
                         break;
                     default: // State key
-                        appendBuffer(buffer, *c);
+                        ini_appendBuffer(buffer, *c);
                         state = 3; 
                         break;
                 }
@@ -94,7 +67,7 @@ void parseIni(const char* iniData)
                         state = 0;
                         break;
                     default:
-                        appendBuffer(buffer, *c);
+                        ini_appendBuffer(buffer, *c);
                         break;
                 }
                 break;
@@ -113,7 +86,7 @@ void parseIni(const char* iniData)
                         state = 0; 
                         break;
                     default:
-                        appendBuffer(buffer, *c);
+                        ini_appendBuffer(buffer, *c);
                         break;
                 }
                 break;
@@ -148,7 +121,7 @@ void parseIni(const char* iniData)
                     case '\t':
                         break;
                     default: // Begin value
-                        appendBuffer(buffer, *c);
+                        ini_appendBuffer(buffer, *c);
                         state = 6; 
                         break;
                 }
@@ -159,7 +132,7 @@ void parseIni(const char* iniData)
                 switch (*c)
                 {
                     case '\n': // End of value
-                        stripeBuffer(buffer);
+                        ini_stripeBuffer(buffer);
                         strcpy_s(currentValue, 256, buffer);
                         *buffer = '\0';
                         state = 0;
@@ -172,7 +145,7 @@ void parseIni(const char* iniData)
                         strcat_s(buffer, 256, "    ");
                         break;
                     default:
-                        appendBuffer(buffer, *c);
+                        ini_appendBuffer(buffer, *c);
                         break;
                 }
                 break;
@@ -185,18 +158,18 @@ void parseIni(const char* iniData)
     }
 }
 
-void appendBuffer(char* buffer, char c)
+void ini_appendBuffer(char* buffer, char c)
 {
     char str[2] = { c, '\0' };
     strcat_s(buffer, 256, str);
 }
 
-void stripeBuffer(char* buffer)
+void ini_stripeBuffer(char* buffer)
 {
     char* c = &buffer[strlen(buffer) - 1];
     if (*c == ' ' || *c == '\t')
     {
         *c = '\0';
-        stripeBuffer(buffer);
+        ini_stripeBuffer(buffer);
     }
 }
