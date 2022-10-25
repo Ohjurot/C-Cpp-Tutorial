@@ -1,7 +1,39 @@
 #include "INIParser.h"
 
+void ini_parseIniFromFile(const char* filePath)
+{
+    FILE* file = NULL;
+    fopen_s(&file, filePath, "rb");
+    if (file)
+    {
+        // Open file for reading
+        size_t fileSize = 0;
+        fseek(file, 0, SEEK_END);
+        fileSize = ftell(file);
+        rewind(file);
+        
+        char* fileContent = malloc(fileSize + 1);
+        if (fileContent)
+        {
+            if (fread(fileContent, fileSize, 1, file) == 1)
+            {
+                // Read sucess
+                fileContent[fileSize] = '\0';
+                ini_parseIni(fileContent);
+            }
+            free(fileContent);
+        }
+
+        fclose(file);
+    }
+}
+
 void ini_parseIni(const char* iniData)
 {
+    // Open a log file
+    FILE* log = NULL;
+    fopen_s(&log, "./iniparser.log", "wb");
+
     // Working buffer
     char buffer[256];
     *buffer = '\0';
@@ -139,6 +171,11 @@ void ini_parseIni(const char* iniData)
 
                         // Report out
                         printf("Propertie: \"%s/%s\": \"%s\"\n", currentSecion, currentKey, currentValue);
+                        if (log)
+                        {
+                            fprintf_s(log, "Section = \"%s\" Key = \"%s\" Value = \"%s\"\n", 
+                                currentSecion, currentKey, currentValue);
+                        }
 
                         break;
                     case '\t': // Replace tab with spaces
@@ -156,12 +193,20 @@ void ini_parseIni(const char* iniData)
                 break;
         }
     }
+
+    if (log)
+    {
+        fclose(log);
+    }
 }
 
 void ini_appendBuffer(char* buffer, char c)
 {
-    char str[2] = { c, '\0' };
-    strcat_s(buffer, 256, str);
+    if (!iscntrl(c))
+    {
+        char str[2] = { c, '\0' };
+        strcat_s(buffer, 256, str);
+    }
 }
 
 void ini_stripeBuffer(char* buffer)

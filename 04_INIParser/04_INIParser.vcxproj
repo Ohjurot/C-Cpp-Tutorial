@@ -25,6 +25,9 @@
   <ItemGroup>
     <ClInclude Include="INIParser.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="config.ini" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -80,22 +83,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)build\bin\$(PlatformShortName)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)build\obj\$(PlatformShortName)-$(Configuration)\$(ProjectName)\</IntDir>
-    <TargetName>Strings</TargetName>
+    <TargetName>INIParser</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)build\bin\$(PlatformShortName)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)build\obj\$(PlatformShortName)-$(Configuration)\$(ProjectName)\</IntDir>
-    <TargetName>Strings</TargetName>
+    <TargetName>INIParser</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)build\bin\$(PlatformShortName)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)build\obj\$(PlatformShortName)-$(Configuration)\$(ProjectName)\</IntDir>
-    <TargetName>Strings</TargetName>
+    <TargetName>INIParser</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)build\bin\$(PlatformShortName)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)build\obj\$(PlatformShortName)-$(Configuration)\$(ProjectName)\</IntDir>
-    <TargetName>Strings</TargetName>
+    <TargetName>INIParser</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -1,0 +1,5 @@
+Section = "owner" Key = "name" Value = "John Doe"
+Section = "owner" Key = "organization" Value = "Acme Widgets Inc."
+Section = "database" Key = "server" Value = "192.0.2.62"
+Section = "database" Key = "port" Value = "143"
+Section = "database" Key = "file" Value = ""payroll.dat""
