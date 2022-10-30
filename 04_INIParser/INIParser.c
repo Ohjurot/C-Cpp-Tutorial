@@ -1,6 +1,6 @@
 #include "INIParser.h"
 
-void ini_parseIniFromFile(const char* filePath, const char* logfilePath)
+void ini_parseIniFromFile(const char* filePath, const char* logfilePath, ini_callback callback)
 {
     FILE* file = NULL;
     fopen_s(&file, filePath, "rb");
@@ -19,7 +19,7 @@ void ini_parseIniFromFile(const char* filePath, const char* logfilePath)
             {
                 // Read sucess
                 fileContent[fileSize] = '\0';
-                ini_parseIni(fileContent, logfilePath);
+                ini_parseIni(fileContent, logfilePath, callback);
             }
             free(fileContent);
         }
@@ -28,7 +28,7 @@ void ini_parseIniFromFile(const char* filePath, const char* logfilePath)
     }
 }
 
-void ini_parseIni(const char* iniData, const char* logfilePath)
+void ini_parseIni(const char* iniData, const char* logfilePath, ini_callback callback)
 {
     // Open a log file
     FILE* log = NULL;
@@ -173,7 +173,7 @@ void ini_parseIni(const char* iniData, const char* logfilePath)
                         state = 0;
 
                         // Report out
-                        printf("Propertie: \"%s/%s\": \"%s\"\n", currentSecion, currentKey, currentValue);
+                        callback(currentSecion, currentKey, currentValue);
                         if (log)
                         {
                             fprintf_s(log, "Section = \"%s\" Key = \"%s\" Value = \"%s\"\n", 

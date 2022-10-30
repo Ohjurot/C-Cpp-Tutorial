@@ -6,7 +6,9 @@
 #include <string.h>
 #include <ctype.h>
 
-void ini_parseIniFromFile(const char* filePath, const char* logfilePath);
-void ini_parseIni(const char* iniData, const char* logfilePath);
+typedef void(*ini_callback)(const char* section, const char* key, const char* value);
+
+void ini_parseIniFromFile(const char* filePath, const char* logfilePath, ini_callback callback);
+void ini_parseIni(const char* iniData, const char* logfilePath, ini_callback callback);
 void ini_appendBuffer(char* buffer, char c);
 void ini_stripeBuffer(char* buffer);
