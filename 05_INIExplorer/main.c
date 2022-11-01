@@ -3,6 +3,14 @@
 #include <stdio.h>
 #include <string.h>
 
+#if defined(INIEXPLORER_DEFAULT_FORMAT1) && !defined(INIEXPLORER_DEFAULT_FORMAT2)
+#define INIEXPLORER_FORMAT_CALLBACK iniDataReady1
+#elif defined(INIEXPLORER_DEFAULT_FORMAT2) && !defined(INIEXPLORER_DEFAULT_FORMAT1)
+#define INIEXPLORER_FORMAT_CALLBACK iniDataReady2
+#else
+#error Please define EXACTLY one default format!
+#endif
+
 void iniDataReady1(const char* section, const char* key, const char* value)
 {
     printf_s("[%s]\n%s = %s\n\n", section, key, value);
@@ -23,10 +31,21 @@ int main(int argc, char** argv)
     }
 
     // Check the format
-    ini_callback callback = iniDataReady1;
-    if (argc >= 3 && strcmp(argv[2], "2") == 0)
+    ini_callback callback = INIEXPLORER_FORMAT_CALLBACK;
+    if (argc >= 3)
     {
-        callback = iniDataReady2;
+        switch (*argv[2])
+        {
+            case '1':
+                callback = iniDataReady1;
+                break;
+            case '2':
+                callback = iniDataReady2;
+                break;
+            default:
+                printf_s("Invalid format!");
+                return -1;
+        }
     }
 
     // Check logfile path
