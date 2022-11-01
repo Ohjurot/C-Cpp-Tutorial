@@ -1,4 +1,4 @@
-#include "INIParser.h"
+#include <INIParser.h>
 
 #include <stdio.h>
 #include <string.h>

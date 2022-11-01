@@ -15,13 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="INIParser.c">
+    <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="INIParser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <None Include="config.ini" />
   </ItemGroup>
 </Project>

@@ -15,6 +15,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "03_MemoryUtils", "03_Memory
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "04_INIParser", "04_INIParser\04_INIParser.vcxproj", "{919D474A-6558-42AB-83A7-35BA94D3A66C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "05_INIExplorer", "05_INIExplorer\05_INIExplorer.vcxproj", "{1EC0F4F2-3FE1-4829-9469-657981FCFED0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{919D474A-6558-42AB-83A7-35BA94D3A66C} = {919D474A-6558-42AB-83A7-35BA94D3A66C}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -63,6 +68,14 @@ Global
 		{919D474A-6558-42AB-83A7-35BA94D3A66C}.Release|x64.Build.0 = Release|x64
 		{919D474A-6558-42AB-83A7-35BA94D3A66C}.Release|x86.ActiveCfg = Release|Win32
 		{919D474A-6558-42AB-83A7-35BA94D3A66C}.Release|x86.Build.0 = Release|Win32
+		{1EC0F4F2-3FE1-4829-9469-657981FCFED0}.Debug|x64.ActiveCfg = Debug|x64
+		{1EC0F4F2-3FE1-4829-9469-657981FCFED0}.Debug|x64.Build.0 = Debug|x64
+		{1EC0F4F2-3FE1-4829-9469-657981FCFED0}.Debug|x86.ActiveCfg = Debug|Win32
+		{1EC0F4F2-3FE1-4829-9469-657981FCFED0}.Debug|x86.Build.0 = Debug|Win32
+		{1EC0F4F2-3FE1-4829-9469-657981FCFED0}.Release|x64.ActiveCfg = Release|x64
+		{1EC0F4F2-3FE1-4829-9469-657981FCFED0}.Release|x64.Build.0 = Release|x64
+		{1EC0F4F2-3FE1-4829-9469-657981FCFED0}.Release|x86.ActiveCfg = Release|Win32
+		{1EC0F4F2-3FE1-4829-9469-657981FCFED0}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
