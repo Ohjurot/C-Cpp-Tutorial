@@ -18,9 +18,18 @@
     <ClCompile Include="INIParser.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="INIx.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INIParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INIApi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INIx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

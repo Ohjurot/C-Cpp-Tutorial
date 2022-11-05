@@ -21,5 +21,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="config.ini" />
+    <None Include="default.ini" />
   </ItemGroup>
 </Project>
