@@ -9,6 +9,16 @@ int32_t f(int32_t x)
 class FunctionPreCacher
 {
     public:
+        FunctionPreCacher() = default;
+        FunctionPreCacher(int32_t x, uint32_t count, int32_t(*function)(int32_t))
+        {
+            Setup(x, count, function);
+        }
+        ~FunctionPreCacher()
+        {
+            Release();
+        }
+
         void Setup(int32_t x, uint32_t count, int32_t(*function)(int32_t))
         {
             if (!values)
@@ -69,9 +79,7 @@ int main()
     std::cout << "Enter the itterations: ";
     std::cin >> count;
 
-    FunctionPreCacher pc;
-    pc.Setup(x, count, &f);
+    FunctionPreCacher pc(x, count, &f);
     pc.Compute();
     pc.Print();
-    pc.Release();
 }
