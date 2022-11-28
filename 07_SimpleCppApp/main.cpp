@@ -54,7 +54,7 @@ class FunctionPreCacher
             }
         }
 
-        void Print()
+        void Print() const
         {
             if (values)
             {
@@ -70,6 +70,11 @@ class FunctionPreCacher
         int32_t(*function)(int32_t x) = nullptr;
 };
 
+void PrintPc(const FunctionPreCacher& pc)
+{
+    pc.Print();
+}
+
 int main()
 {
     int32_t x;
@@ -81,5 +86,5 @@ int main()
 
     FunctionPreCacher pc(x, count, &f);
     pc.Compute();
-    pc.Print();
+    PrintPc(pc);
 }
