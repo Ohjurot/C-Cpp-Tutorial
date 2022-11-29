@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include <cstdint>
 
 int32_t f(int32_t x)
@@ -10,6 +11,21 @@ class FunctionPreCacher
 {
     public:
         FunctionPreCacher() = default;
+        FunctionPreCacher(const FunctionPreCacher& other)
+        {
+            x = other.x;
+            count = other.count;
+            function = other.function;
+            
+            if (other.values)
+            {
+                values = new int32_t[other.count];
+                if (values)
+                {
+                    std::memcpy(values, other.values, sizeof(int32_t) * other.count);
+                }
+            }
+        }
         FunctionPreCacher(int32_t x, uint32_t count, int32_t(*function)(int32_t))
         {
             Setup(x, count, function);
@@ -17,6 +33,17 @@ class FunctionPreCacher
         ~FunctionPreCacher()
         {
             Release();
+        }
+
+        FunctionPreCacher& operator=(const FunctionPreCacher& other)
+        {
+            if (this != &other)
+            {
+                this->~FunctionPreCacher();
+                this->FunctionPreCacher::FunctionPreCacher(other);
+            }
+
+            return *this;
         }
 
         void Setup(int32_t x, uint32_t count, int32_t(*function)(int32_t))
