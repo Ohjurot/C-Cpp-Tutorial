@@ -26,6 +26,15 @@ class FunctionPreCacher
                 }
             }
         }
+        FunctionPreCacher(FunctionPreCacher&& other) noexcept
+        {
+            x = other.x;
+            count = other.count;
+            function = other.function;
+            values = other.values;
+
+            other.values = nullptr;
+        }
         FunctionPreCacher(int32_t x, uint32_t count, int32_t(*function)(int32_t))
         {
             Setup(x, count, function);
@@ -46,17 +55,26 @@ class FunctionPreCacher
             return *this;
         }
 
-        void Setup(int32_t x, uint32_t count, int32_t(*function)(int32_t))
+        FunctionPreCacher& operator=(FunctionPreCacher&& other) noexcept
         {
-            if (!values)
+            if (this != &other)
             {
-                this->x = x;
-                this->count = count;
-                this->function = function;
+                this->~FunctionPreCacher();
+                this->FunctionPreCacher::FunctionPreCacher(std::move(other));
             }
+
+            return *this;
         }
 
-        void Compute()
+        void Setup(int32_t x, uint32_t count, int32_t(*function)(int32_t))
+        {
+            Release();
+            this->x = x;
+            this->count = count;
+            this->function = function;
+        }
+
+        FunctionPreCacher& Compute()
         {
             if (function && count > 0)
             {
@@ -70,6 +88,8 @@ class FunctionPreCacher
                     }
                 }
             }
+
+            return *this;
         }
 
         void Release()
@@ -97,10 +117,47 @@ class FunctionPreCacher
         int32_t(*function)(int32_t x) = nullptr;
 };
 
-void PrintPc(const FunctionPreCacher& pc)
+class PreCacherContainer
 {
-    pc.Print();
-}
+    public:
+        PreCacherContainer() = default;
+        PreCacherContainer(const PreCacherContainer&) = default;
+        PreCacherContainer(PreCacherContainer&&) noexcept = default;
+        ~PreCacherContainer() = default;
+
+        PreCacherContainer& operator=(const PreCacherContainer&) = default;
+        PreCacherContainer& operator=(PreCacherContainer&&) noexcept = default;
+
+        void Print() const
+        {
+            std::cout << "Container at " << this << std::endl;
+            for (int i = 0; i < m_usage; i++)
+            {
+                std::cout << "FunctionPreCacher #" << (i + 1) << std::endl;
+                m_preCachers[i].Print();
+            }
+        }
+
+        void Append(const FunctionPreCacher& pc)
+        {
+            if (m_usage < 8)
+            {
+                m_preCachers[m_usage++] = pc;
+            }
+        }
+
+        void Append(FunctionPreCacher&& pc)
+        {
+            if (m_usage < 8)
+            {
+                m_preCachers[m_usage++] = std::move(pc);
+            }
+        }
+
+    private:
+        FunctionPreCacher m_preCachers[8];
+        int m_usage = 0;
+};
 
 int main()
 {
@@ -111,7 +168,10 @@ int main()
     std::cout << "Enter the itterations: ";
     std::cin >> count;
 
-    FunctionPreCacher pc(x, count, &f);
-    pc.Compute();
-    PrintPc(pc);
+    PreCacherContainer cnt;
+    cnt.Append(std::move(FunctionPreCacher(x, count, &f).Compute()));
+    cnt.Append(std::move(FunctionPreCacher(x * 2, count, &f).Compute()));
+    cnt.Append(std::move(FunctionPreCacher(x, count * 2, &f).Compute()));
+    cnt.Append(std::move(FunctionPreCacher(x * 2, count * 2, &f).Compute()));
+    cnt.Print();
 }
