@@ -54,7 +54,6 @@ class FunctionPreCacher
 
             return *this;
         }
-
         FunctionPreCacher& operator=(FunctionPreCacher&& other) noexcept
         {
             if (this != &other)
@@ -73,7 +72,6 @@ class FunctionPreCacher
             this->count = count;
             this->function = function;
         }
-
         FunctionPreCacher& Compute()
         {
             if (function && count > 0)
@@ -91,7 +89,6 @@ class FunctionPreCacher
 
             return *this;
         }
-
         void Release()
         {
             if (values)
@@ -100,15 +97,41 @@ class FunctionPreCacher
                 values = nullptr;
             }
         }
-
-        void Print() const
+        void Print(std::ostream& os = std::cout) const
         {
             if (values)
             {
                 for (uint32_t i = 1; i <= count; i++)
-                    std::cout << "f(" << i * x << ") = " << values[i - 1] << std::endl;
+                    os << "f(" << i * x << ") = " << values[i - 1] << std::endl;
             }
         }   
+        int32_t At(uint32_t index) const
+        {
+            // TODO: Check range
+            return values[index];
+        }
+        uint32_t Size() const
+        {
+            return count;
+        }
+
+        FunctionPreCacher& operator()()
+        {
+            return Compute();
+        }
+        FunctionPreCacher& operator()(int32_t x, uint32_t count, int32_t(*function)(int32_t))
+        {
+            Setup(x, count, function);
+            return Compute();
+        }
+        int32_t operator[](uint32_t index) const
+        {
+            return At(index);
+        }
+        operator bool()
+        {
+            return values != nullptr;
+        }
 
     private:
         int32_t* values = nullptr;
@@ -128,16 +151,15 @@ class PreCacherContainer
         PreCacherContainer& operator=(const PreCacherContainer&) = default;
         PreCacherContainer& operator=(PreCacherContainer&&) noexcept = default;
 
-        void Print() const
+        void Print(std::ostream& os = std::cout) const
         {
-            std::cout << "Container at " << this << std::endl;
+            os << "Container at " << this << std::endl;
             for (int i = 0; i < m_usage; i++)
             {
-                std::cout << "FunctionPreCacher #" << (i + 1) << std::endl;
-                m_preCachers[i].Print();
+                os << "FunctionPreCacher #" << (i + 1) << std::endl;
+                m_preCachers[i].Print(os);
             }
         }
-
         void Append(const FunctionPreCacher& pc)
         {
             if (m_usage < 8)
@@ -145,7 +167,6 @@ class PreCacherContainer
                 m_preCachers[m_usage++] = pc;
             }
         }
-
         void Append(FunctionPreCacher&& pc)
         {
             if (m_usage < 8)
@@ -153,11 +174,48 @@ class PreCacherContainer
                 m_preCachers[m_usage++] = std::move(pc);
             }
         }
+        const FunctionPreCacher& At(int index) const
+        {
+            return m_preCachers[index];
+        }
+        FunctionPreCacher& At(int index)
+        {
+            return m_preCachers[index];
+        }
+        int Size() const
+        {
+            return m_usage;
+        }
+
+        PreCacherContainer& operator<<(const FunctionPreCacher& pc)
+        {
+            Append(pc);
+            return *this;
+        }
+        PreCacherContainer& operator<<(FunctionPreCacher&& pc)
+        {
+            Append(std::move(pc));
+            return *this;
+        }
+        const FunctionPreCacher& operator[](int index) const
+        {
+            return At(index);
+        }
+        FunctionPreCacher& operator[](int index)
+        {
+            return At(index);
+        }
 
     private:
         FunctionPreCacher m_preCachers[8];
         int m_usage = 0;
 };
+
+std::ostream& operator<<(std::ostream& os, const PreCacherContainer& pc)
+{
+    pc.Print(os);
+    return os;
+}
 
 int main()
 {
@@ -169,9 +227,10 @@ int main()
     std::cin >> count;
 
     PreCacherContainer cnt;
-    cnt.Append(std::move(FunctionPreCacher(x, count, &f).Compute()));
-    cnt.Append(std::move(FunctionPreCacher(x * 2, count, &f).Compute()));
-    cnt.Append(std::move(FunctionPreCacher(x, count * 2, &f).Compute()));
-    cnt.Append(std::move(FunctionPreCacher(x * 2, count * 2, &f).Compute()));
-    cnt.Print();
+    cnt << std::move(FunctionPreCacher(x, count, &f)())
+        << std::move(FunctionPreCacher(x * 2, count, &f)())
+        << std::move(FunctionPreCacher(x, count * 2, &f)())
+        << std::move(FunctionPreCacher(x * 2, count * 2, &f)());
+
+    std::cout << cnt;
 }
