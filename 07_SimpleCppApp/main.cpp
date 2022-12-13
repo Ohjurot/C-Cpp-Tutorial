@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include <cstdlib>
 #include <cstdint>
 
@@ -23,6 +24,10 @@ class FunctionPreCacher
                 if (values)
                 {
                     std::memcpy(values, other.values, sizeof(int32_t) * other.count);
+                }
+                else
+                {
+                    throw std::runtime_error("FunctionPreCacher new failed!");
                 }
             }
         }
@@ -85,6 +90,10 @@ class FunctionPreCacher
                         values[i - 1] = function(i * x);
                     }
                 }
+                else
+                {
+                    throw std::runtime_error("FunctionPreCacher new failed!");
+                }
             }
 
             return *this;
@@ -107,10 +116,11 @@ class FunctionPreCacher
         }   
         int32_t At(uint32_t index) const
         {
-            // TODO: Check range
+            if(index >= count)
+                throw std::range_error("FunctionPreCacher index out of range!");
             return values[index];
         }
-        uint32_t Size() const
+        uint32_t Size() const noexcept
         {
             return count;
         }
@@ -162,27 +172,29 @@ class PreCacherContainer
         }
         void Append(const FunctionPreCacher& pc)
         {
-            if (m_usage < 8)
-            {
-                m_preCachers[m_usage++] = pc;
-            }
+            if (m_usage >= 8)
+                throw std::overflow_error("PreCacherContainer Container overflown");
+            m_preCachers[m_usage++] = pc;
         }
         void Append(FunctionPreCacher&& pc)
         {
-            if (m_usage < 8)
-            {
-                m_preCachers[m_usage++] = std::move(pc);
-            }
+            if (m_usage >= 8)
+                throw std::overflow_error("PreCacherContainer Container overflown");
+            m_preCachers[m_usage++] = std::move(pc);
         }
         const FunctionPreCacher& At(int index) const
         {
+            if (index >= 8 || index < 0) 
+                throw std::range_error("PreCacherContainer index out of range");
             return m_preCachers[index];
         }
         FunctionPreCacher& At(int index)
         {
+            if (index >= 8 || index < 0)
+                throw std::range_error("PreCacherContainer index out of range");
             return m_preCachers[index];
         }
-        int Size() const
+        int Size() const noexcept
         {
             return m_usage;
         }
@@ -216,8 +228,13 @@ std::ostream& operator<<(std::ostream& os, const PreCacherContainer& pc)
     pc.Print(os);
     return os;
 }
+std::ostream& operator<<(std::ostream& os, const FunctionPreCacher& pc)
+{
+    pc.Print(os);
+    return os;
+}
 
-int main()
+int SaveMain()
 {
     int32_t x;
     uint32_t count;
@@ -231,6 +248,24 @@ int main()
         << std::move(FunctionPreCacher(x * 2, count, &f)())
         << std::move(FunctionPreCacher(x, count * 2, &f)())
         << std::move(FunctionPreCacher(x * 2, count * 2, &f)());
-
     std::cout << cnt;
+
+    return 0;
+}
+
+int main() noexcept
+{
+    try 
+    {
+        return SaveMain();
+    }
+    catch (const std::exception& ex)
+    {
+        std::cout << "Exception occured: " << ex.what() << std::endl;
+    }
+    catch (...)
+    {
+        std::cout << "Unknown exception occured!" << std::endl;
+    }
+    return -1;
 }
