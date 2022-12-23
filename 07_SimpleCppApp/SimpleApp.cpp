@@ -9,7 +9,7 @@ int SimpleApp::SaveMain()
     std::cout << "Enter the itterations: ";
     std::cin >> count;
 
-    PreCacherContainer cnt;
+    PreCacherContainer<Vector2> cnt;
     cnt << std::move(FunctionPreCacher(x, count, &f)())
         << std::move(FunctionPreCacher(x * 2, count, &f)())
         << std::move(FunctionPreCacher(x, count * 2, &f)())

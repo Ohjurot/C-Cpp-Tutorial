@@ -7,6 +7,7 @@
 
 namespace SimpleApp
 {
+    template<typename T>
     class FunctionPreCacher
     {
         public:
@@ -19,10 +20,13 @@ namespace SimpleApp
 
                 if (other.values)
                 {
-                    values = new int32_t[other.count];
+                    values = new T[other.count];
                     if (values)
                     {
-                        std::memcpy(values, other.values, sizeof(int32_t) * other.count);
+                        for (uint32_t i = 0; i < other.count; i++)
+                        {
+                            values[i] = other.values[i];
+                        }
                     }
                     else
                     {
@@ -39,7 +43,7 @@ namespace SimpleApp
 
                 other.values = nullptr;
             }
-            FunctionPreCacher(int32_t x, uint32_t count, int32_t(*function)(int32_t))
+            FunctionPreCacher(int32_t x, uint32_t count, T(*function)(int32_t))
             {
                 Setup(x, count, function);
             }
@@ -69,7 +73,7 @@ namespace SimpleApp
                 return *this;
             }
 
-            void Setup(int32_t x, uint32_t count, int32_t(*function)(int32_t))
+            void Setup(int32_t x, uint32_t count, T(*function)(int32_t))
             {
                 Release();
                 this->x = x;
@@ -81,7 +85,7 @@ namespace SimpleApp
                 if (function && count > 0)
                 {
                     Release();
-                    values = new int32_t[count];
+                    values = new T[count];
                     if (values)
                     {
                         for (uint32_t i = 1; i <= count; i++)
@@ -128,12 +132,12 @@ namespace SimpleApp
             {
                 return Compute();
             }
-            FunctionPreCacher& operator()(int32_t x, uint32_t count, int32_t(*function)(int32_t))
+            FunctionPreCacher& operator()(int32_t x, uint32_t count, T(*function)(int32_t))
             {
                 Setup(x, count, function);
                 return Compute();
             }
-            int32_t operator[](uint32_t index) const
+            const T& operator[](uint32_t index) const
             {
                 return At(index);
             }
@@ -143,14 +147,15 @@ namespace SimpleApp
             }
 
         private:
-            int32_t* values = nullptr;
+            T* values = nullptr;
             int32_t x = 0;
             uint32_t count = 0;
-            int32_t(*function)(int32_t x) = nullptr;
+            T(*function)(int32_t x) = nullptr;
     };
 }
 
-inline std::ostream& operator<<(std::ostream& os, const SimpleApp::FunctionPreCacher& pc)
+template<typename T>
+inline std::ostream& operator<<(std::ostream& os, const SimpleApp::FunctionPreCacher<T>& pc)
 {
     pc.Print(os);
     return os;

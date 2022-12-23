@@ -7,6 +7,7 @@
 
 namespace SimpleApp
 {
+    template<typename T, typename Pc = FunctionPreCacher<T>>
     class PreCacherContainer
     {
         public:
@@ -27,25 +28,25 @@ namespace SimpleApp
                     os << m_preCachers[i];
                 }
             }
-            void Append(const FunctionPreCacher& pc)
+            void Append(const Pc& pc)
             {
                 if (m_usage >= 8)
                     throw std::overflow_error("PreCacherContainer Container overflown");
                 m_preCachers[m_usage++] = pc;
             }
-            void Append(FunctionPreCacher&& pc)
+            void Append(Pc&& pc)
             {
                 if (m_usage >= 8)
                     throw std::overflow_error("PreCacherContainer Container overflown");
                 m_preCachers[m_usage++] = std::move(pc);
             }
-            const FunctionPreCacher& At(int index) const
+            const Pc& At(int index) const
             {
                 if (index >= 8 || index < 0) 
                     throw std::range_error("PreCacherContainer index out of range");
                 return m_preCachers[index];
             }
-            FunctionPreCacher& At(int index)
+            Pc& At(int index)
             {
                 if (index >= 8 || index < 0)
                     throw std::range_error("PreCacherContainer index out of range");
@@ -56,32 +57,33 @@ namespace SimpleApp
                 return m_usage;
             }
 
-            PreCacherContainer& operator<<(const FunctionPreCacher& pc)
+            PreCacherContainer& operator<<(const Pc& pc)
             {
                 Append(pc);
                 return *this;
             }
-            PreCacherContainer& operator<<(FunctionPreCacher&& pc)
+            PreCacherContainer& operator<<(Pc&& pc)
             {
                 Append(std::move(pc));
                 return *this;
             }
-            const FunctionPreCacher& operator[](int index) const
+            const Pc& operator[](int index) const
             {
                 return At(index);
             }
-            FunctionPreCacher& operator[](int index)
+            Pc& operator[](int index)
             {
                 return At(index);
             }
 
         private:
-            FunctionPreCacher m_preCachers[8];
+            Pc m_preCachers[8];
             int m_usage = 0;
     };
 }
 
-inline std::ostream& operator<<(std::ostream& os, const SimpleApp::PreCacherContainer& pc)
+template<typename T>
+inline std::ostream& operator<<(std::ostream& os, const SimpleApp::PreCacherContainer<T>& pc)
 {
     pc.Print(os);
     return os;
