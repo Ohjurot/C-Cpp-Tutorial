@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Toy.hpp"
+#include "IInteractable.hpp"
+
 #include <string>
 #include <ostream>
 #include <string_view>
@@ -11,6 +14,10 @@ namespace PetManager
 {
     class Pet
     {
+        public:
+            using ToyInteractable = IInteractable<std::string, Toy&>;
+            using WaterInteractable = IInteractable<std::string, float /* Water speed */, float /* Water depth */>;
+
         public:
             Pet(const std::string_view& name);
             virtual ~Pet() = default;

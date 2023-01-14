@@ -10,6 +10,16 @@ int main()
     Cat tabby("Tabby");
     Dog oscar("Oscar");
     
+    ToyBone bone;
+    ToyMouse mouse;
+
+    std::cout << "Playing with our pets: " << std::endl;
+    std::cout << oscar.GetName() << " gets the bone: " << oscar.Interact(bone) << std::endl;
+    std::cout << oscar.GetName() << " gets the mouse: " << oscar.Interact(mouse) << std::endl;
+    std::cout << tabby.GetName() << " gets the bone: " << tabby.Interact(bone) << std::endl;
+    std::cout << tabby.GetName() << " gets the mouse: " << tabby.Interact(mouse) << std::endl;
+    std::cout << std::endl;
+
     tabby.Lived(); oscar.Lived();
     tabby.Lived(); oscar.Lived();
     tabby.Lived(); oscar.Lived();

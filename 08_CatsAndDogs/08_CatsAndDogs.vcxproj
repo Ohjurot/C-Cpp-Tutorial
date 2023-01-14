@@ -157,7 +157,9 @@
   <ItemGroup>
     <ClInclude Include="Cat.hpp" />
     <ClInclude Include="Dog.hpp" />
+    <ClInclude Include="IInteractable.hpp" />
     <ClInclude Include="Pet.hpp" />
+    <ClInclude Include="Toy.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
