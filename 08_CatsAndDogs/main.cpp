@@ -2,14 +2,35 @@
 
 #include "Cat.hpp"
 #include "Dog.hpp"
+#include "LinkedList.hpp"
 
 int main()
 {
     using namespace PetManager;
+    using namespace FuselUtil;
 
     Cat tabby("Tabby");
     Dog oscar("Oscar");
-    
+
+    LinkedList<int> myInts;
+    for (int i = 0; i < 1024; i++) myInts.Append(i);
+
+    LinkedList<PetManager::Pet*> ll;
+    ll.Append(&tabby);
+    ll.Append(&oscar);
+
+    for (size_t i = 0; i < ll.Count(); i++)
+    {
+        std::cout << (i + 1) << ". " << *ll[i] << std::endl;
+    }
+
+    ll.Erase(ll.Count() - 1);
+
+    for (size_t i = 0; i < ll.Count(); i++)
+    {
+        std::cout << (i + 1) << ". " << *ll[i] << std::endl;
+    }
+
     ToyBone bone;
     ToyMouse mouse;
 
