@@ -12,23 +12,20 @@ int main()
     Cat tabby("Tabby");
     Dog oscar("Oscar");
 
-    LinkedList<int> myInts;
-    for (int i = 0; i < 1024; i++) myInts.Append(i);
+    LinkedList<Pet*> pets;
+    pets.Append(&tabby); 
+    pets.Append(&oscar);
 
-    LinkedList<PetManager::Pet*> ll;
-    ll.Append(&tabby);
-    ll.Append(&oscar);
-
-    for (size_t i = 0; i < ll.Count(); i++)
+    for (const Pet* pet : pets)
     {
-        std::cout << (i + 1) << ". " << *ll[i] << std::endl;
+        std::cout << *pet << std::endl;
     }
 
-    ll.Erase(ll.Count() - 1);
+    pets.Erase(pets.Count() - 1);
 
-    for (size_t i = 0; i < ll.Count(); i++)
+    for (const Pet* pet : pets)
     {
-        std::cout << (i + 1) << ". " << *ll[i] << std::endl;
+        std::cout << *pet << std::endl;
     }
 
     ToyBone bone;
