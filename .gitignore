@@ -1,5 +1,9 @@
-# Exclude visual studio dir
+# Exclude VisualStudio
 /.vs
+**.sln
+**.vcxproj
+**.vcxproj.user
+**.vcxproj.filters
 
 # Exclude build
 /build
