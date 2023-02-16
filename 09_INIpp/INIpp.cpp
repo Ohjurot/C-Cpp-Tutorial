@@ -164,3 +164,8 @@ void INIpp::SAXParser::ParseKVPair(const std::string& section, const std::string
         m_callback(section, key, value);
     }
 }
+
+void INIpp::DOMParser::ParseKVPair(const std::string& section, const std::string& key, const std::string& value)
+{
+    m_document[section].Append(DOM::KVPair(key, value));
+}
