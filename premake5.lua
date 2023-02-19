@@ -1,30 +1,20 @@
+include "cpptutorial.lua"
+
 workspace "CppTutorial"
     configurations { "Debug", "Release" }
     architecture "x64"
     location "./"
 
-    projectName = "08_CatsAndDogs"
-    project(projectName)
-        kind "ConsoleApp"
-        language "C++"
-        cppdialect "C++20"
+    include "./01_SimpleCApp/build.lua"
+    include "./02_Pointers/build.lua"
+    include "./03_MemoryUtils/build.lua"
+    include "./04_INIParser/build.lua"
+    include "./05_INIExplorer/build.lua"
+    include "./06_AdvancedCStructs/build.lua"
+    include "./07_SimpleCppApp/build.lua"
+    include "./08_CatsAndDogs/build.lua"
+    include "./09_INIpp/build.lua"
 
-        targetdir "%{wks.location}/build/bin/%{cfg.architecture}-%{cfg.buildcfg}/"
-        objdir "%{wks.location}/build/obj/%{cfg.architecture}-%{cfg.buildcfg}/%{prj.name}/"
-
-        location("%{wks.location}/" .. projectName)
-        files { 
-            "%{prj.location}/**.h", "%{prj.location}/**.hpp", "%{prj.location}/**.hh", "%{prj.location}/**.hxx",  
-            "%{prj.location}/**.c", "%{prj.location}/**.cpp", "%{prj.location}/**.cc", "%{prj.location}/**.cxx",
-            "%{prj.location}/**.lua", "%{prj.location}/**.txt", "%{prj.location}/**.md", "%{prj.location}/**.ini",
-        }
-
-        filter "configurations:Debug"
-            defines { "DEBUG", "_DEBUG" }
-            symbols "On"
-        filter {}
-
-        filter "configurations:Release"
-            defines { "NDEBUG" }
-            optimize "On"
-        filter {}
+    group "Exercises"
+        include "./Exercises/E01_Functions/build.lua"
+    group ""
